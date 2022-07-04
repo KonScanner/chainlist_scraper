@@ -76,4 +76,13 @@ def get_data(raw_urls: list, default_ret_type="") -> pd.DataFrame:
     ]
     for column in cols:
         exec(f"df['{column}'] = {column}")
+
+    def topic_like_hex(x):
+        part1 = x.replace("0x","")
+        part2 = 66 - x.__len__()
+        return "0x" + "0" * part2 + part1
+    
+    # Extra columns
+    df["hex_network_id"] = df["network_id"].apply(lambda x: str(hex(x)))
+    df["topic_like_hex_network_id"] = df["hex_network_id"].apply(lambda x: topic_like_hex(x))
     return df
